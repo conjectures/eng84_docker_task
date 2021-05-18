@@ -1,0 +1,9 @@
+
+#Python Development
+.python_version
+__pycache__
+
+# Environments
+env/
+*.sqlite3
+migrations/*
