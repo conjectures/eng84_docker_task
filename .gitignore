@@ -1,9 +1,28 @@
-
-#Python Development
-.python_version
+# Python development
+.python-version
 __pycache__
-
-# Environments
-env/
+# Django
 *.sqlite3
-migrations/*
+migration*
+
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Serverless directories
+.serverless

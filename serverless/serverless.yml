@@ -1,0 +1,34 @@
+
+service: dockerWebHook
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: 'eu-west-2'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+        - ses:SendRawEmail
+      Resource: "*"
+
+  environment:
+    REGION_NAME: 'eu-west-2'
+    ACCESS_KEY: ${env:AWS_ACCESS_KEY}
+    SECRET_KEY: ${env:AWS_SECRET_KEY}
+
+functions:
+  sendEmail:
+    handler: handler.sendEmail
+    description: This function will send an email
+    events:
+      - http:
+        path: send-email
+        method: post
+        integration: lambda
+        cors: true
+        response:
+          headers:
+              "Access-Control-Allow_Origin": "'*'"
