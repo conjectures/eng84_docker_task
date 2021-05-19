@@ -1,30 +1,32 @@
 import json
 import boto3
 import os
-import base64
+
 
 region_name = os.environ['REGION_NAME']
 aws_access_key_id = os.environ['SECRET_KEY']
 aws_secret_access_key = os.environ['SECRET_KEY']
+source = os.environ['SOURCE']
+destination = os.environ['DESTINATION']
 
 
 def sendEmail(event, context):
-    print(event)
-    raw_data = base64.b64decode(event['body'])
+    # Get body from POST request
+    data = json.loads(event['body'])
 
-    print("Raw Data:")
-    print(raw_data)
-    data = dict(item.split('=') for item in raw_data.decode("utf-8").split('&'))
-    print("Data:")
-    print(data)
-    name = data['name']
-    source = data['source']
-    subject = data['subject']
-    message = data['message']
-    destination = data['destination']
+    # Collect data
+    pusher = data.get('push_data').get('pusher')
+    tag = data.get('push_data').get('tag')
+    repo = data.get('repository').get('repo_name')
+    image = data.get('repository').get('name')
 
-    _message = "Message from: " + name + "\nEmail: " + source + "\nMessage content: " + message
+    # Compose subject and messages
+    subject = 'DockeHub update'
+    _message = "Automated message from DockerHub:\nUser {} has pushed image {} version {} on repo {}".format(pusher, image, tag, repo)
+
+    # Use boto3 client for email service
     client = boto3.client('ses')
+
     response = client.send_email(
         Destination={
             'ToAddresses': [destination]

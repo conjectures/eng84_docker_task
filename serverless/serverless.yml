@@ -18,6 +18,8 @@ provider:
     REGION_NAME: 'eu-west-2'
     ACCESS_KEY: ${env:AWS_ACCESS_KEY}
     SECRET_KEY: ${env:AWS_SECRET_KEY}
+    SOURCE: ${env:SOURCE_ADDRESS}
+    DESTINATION: ${env:DESTINATION_ADDRESS}
 
 functions:
   sendEmail:
